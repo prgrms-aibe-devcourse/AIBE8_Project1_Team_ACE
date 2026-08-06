@@ -7,5 +7,31 @@
     }
     return supabaseClient;
   };
-  window.Auth = {};
+
+  const signUp = async ({ email, password, nickname }) => {
+    try {
+      const supabaseClient = getSupabaseClient();
+
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            nickname,
+          },
+        },
+      });
+      if (error) {
+        return { ok: false, error };
+      }
+
+      return { ok: true, data };
+    } catch (error) {
+      return { ok: false, error };
+    }
+  };
+
+  window.Auth = {
+    signUp,
+  };
 })();
