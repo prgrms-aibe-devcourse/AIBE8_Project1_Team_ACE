@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>축제 어때</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="page-root">
+    <header id="site-header" class="site-header"></header>
+
+    <main class="page-main">
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <select class="filter-select"><option>전북 ▾</option></select>
+        <select class="filter-select"><option>이번주 ▾</option></select>
+        <div class="tag-group">
+          <button class="tag-btn">#여름먹거리</button>
+          <button class="tag-btn">#문화예술</button>
+          <button class="tag-btn">#체험행사</button>
+        </div>
+      </div>
+
+      <!-- Festival grid -->
+      <div class="festival-grid" id="festival-grid"></div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </main>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/main-page.js"></script>
+</body>
+</html>
