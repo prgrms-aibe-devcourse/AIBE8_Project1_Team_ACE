@@ -71,9 +71,26 @@
     }
   };
 
+  const getCurrentUser = async () => {
+    try {
+      const supabaseClient = getSupabaseClient();
+
+      const { data, error } = await supabaseClient.auth.getUser();
+
+      if (error) {
+        return { ok: false, error };
+      }
+
+      return { ok: true, data };
+    } catch (error) {
+      return { ok: false, error };
+    }
+  };
+
   window.Auth = {
     signUp,
     signIn,
     signOut,
+    getCurrentUser,
   };
 })();
