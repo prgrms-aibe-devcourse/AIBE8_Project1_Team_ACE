@@ -31,7 +31,26 @@
     }
   };
 
+  const signIn = async ({ email, password }) => {
+    try {
+      const supabaseClient = getSupabaseClient();
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) {
+        return { ok: false, error };
+      }
+
+      return { ok: true, data };
+    } catch (error) {
+      return { ok: false, error };
+    }
+  };
+
   window.Auth = {
     signUp,
+    signIn,
   };
 })();
