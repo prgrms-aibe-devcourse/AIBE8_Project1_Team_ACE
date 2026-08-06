@@ -1,0 +1,4 @@
+window.SUPABASE_CONFIG = {
+  url: "YOUR_SUPABASE_URL",
+  publishableKey: "YOUR_SUPABASE_PUBLISHABLE_KEY",
+};
