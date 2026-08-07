@@ -18,7 +18,8 @@
   font-family: 'Noto Sans KR', sans-serif;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   background-color: var(--bg);
@@ -38,6 +39,7 @@ button {
   width: 4px;
   height: 4px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--border);
   border-radius: 4px;
@@ -190,6 +192,7 @@ button {
   cursor: pointer;
   margin-top: 8px;
 }
+
 .btn-primary:disabled {
   background: var(--border);
   color: var(--text-light);
@@ -205,11 +208,31 @@ button {
   font-size: 11px;
   font-weight: 700;
 }
-.status-badge.active { background: #DCFCE7; color: #16A34A; }
-.status-badge.upcoming { background: #DBEAFE; color: #2563EB; }
-.status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
-.status-badge.active .status-dot { background: #16A34A; }
-.status-badge.upcoming .status-dot { background: #2563EB; }
+
+.status-badge.active {
+  background: #DCFCE7;
+  color: #16A34A;
+}
+
+.status-badge.upcoming {
+  background: #DBEAFE;
+  color: #2563EB;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-badge.active .status-dot {
+  background: #16A34A;
+}
+
+.status-badge.upcoming .status-dot {
+  background: #2563EB;
+}
 
 /* ────────────────────────── Login modal ────────────────────────── */
 
@@ -221,11 +244,13 @@ button {
   align-items: center;
   justify-content: center;
 }
+
 .modal-backdrop {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
 }
+
 .modal-card {
   position: relative;
   background: white;
@@ -235,6 +260,7 @@ button {
   text-align: center;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
 }
+
 .modal-icon-circle {
   width: 52px;
   height: 52px;
@@ -245,20 +271,24 @@ button {
   justify-content: center;
   margin: 0 auto 16px;
 }
+
 .modal-title {
   font-size: 18px;
   font-weight: 700;
   color: var(--text-dark);
   margin-bottom: 8px;
 }
+
 .modal-subtitle {
   font-size: 14px;
   color: var(--text-light);
   margin-bottom: 28px;
 }
+
 .modal-card .btn-primary {
   margin-top: 0;
 }
+
 .modal-cancel-btn {
   margin-top: 12px;
   background: none;
@@ -323,9 +353,21 @@ button {
 }
 
 @media (max-width: 720px) {
-  .festival-grid { grid-template-columns: 1fr; }
-  .page-main, .page-detail, .page-nearby, .page-auth { padding-left: 16px; padding-right: 16px; }
-  .site-header-inner { padding: 0 16px; }
+  .festival-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-main,
+  .page-detail,
+  .page-nearby,
+  .page-auth {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .site-header-inner {
+    padding: 0 16px;
+  }
 }
 
 .festival-card {
@@ -336,6 +378,7 @@ button {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   transition: all 0.22s ease;
 }
+
 .festival-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.13);
@@ -347,6 +390,7 @@ button {
   overflow: hidden;
   background: var(--border-light);
 }
+
 .festival-card-image-wrap img {
   position: absolute;
   inset: 0;
@@ -355,6 +399,7 @@ button {
   object-fit: cover;
   transition: transform 0.35s ease;
 }
+
 .festival-card:hover .festival-card-image-wrap img {
   transform: scale(1.05);
 }
@@ -368,17 +413,20 @@ button {
 .festival-card-body {
   padding: 18px 20px 22px;
 }
+
 .festival-card-title {
   font-size: 18px;
   font-weight: 700;
   color: var(--text-dark);
   margin: 0 0 6px;
 }
+
 .festival-card-period {
   font-size: 13px;
   color: var(--text-light);
   margin: 0 0 4px;
 }
+
 .festival-card-location {
   font-size: 13px;
   color: var(--text-gray);
@@ -394,6 +442,7 @@ button {
   justify-content: center;
   gap: 6px;
 }
+
 .page-btn {
   width: 34px;
   height: 34px;
@@ -407,6 +456,7 @@ button {
   align-items: center;
   justify-content: center;
 }
+
 .page-num-btn {
   width: 34px;
   height: 34px;
@@ -418,6 +468,7 @@ button {
   background: white;
   color: var(--text-gray);
 }
+
 .page-num-btn.active {
   background: var(--primary);
   color: white;
@@ -432,6 +483,7 @@ button {
   display: flex;
   justify-content: center;
 }
+
 .auth-card {
   width: 100%;
   max-width: 420px;
@@ -441,10 +493,12 @@ button {
   padding: 44px 40px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
+
 .auth-logo-wrap {
   text-align: center;
   margin-bottom: 32px;
 }
+
 .auth-logo-icon {
   width: 48px;
   height: 48px;
@@ -455,20 +509,24 @@ button {
   justify-content: center;
   margin: 0 auto 12px;
 }
+
 .auth-title {
   font-size: 22px;
   font-weight: 800;
   color: var(--text-dark);
   margin: 0 0 4px;
 }
+
 .auth-subtitle {
   font-size: 13px;
   color: var(--text-light);
   margin: 0;
 }
+
 .form-field {
   margin-bottom: 16px;
 }
+
 .form-label {
   display: block;
   font-size: 13px;
@@ -476,6 +534,7 @@ button {
   color: var(--text-mid);
   margin-bottom: 6px;
 }
+
 .form-input {
   width: 100%;
   padding: 11px 14px;
@@ -487,16 +546,19 @@ button {
   background: #FAFAFA;
   transition: border-color 0.15s, background 0.15s;
 }
+
 .form-input:focus {
   border-color: var(--primary);
   background: white;
 }
+
 .auth-footer {
   margin-top: 20px;
   text-align: center;
   font-size: 13px;
   color: var(--text-light);
 }
+
 .auth-footer-link {
   background: none;
   border: none;
@@ -513,6 +575,7 @@ button {
   margin: 0 auto;
   padding: 28px 40px 120px;
 }
+
 .back-link {
   display: flex;
   align-items: center;
@@ -525,6 +588,7 @@ button {
   cursor: pointer;
   margin-bottom: 20px;
 }
+
 .hero-image-wrap {
   width: 100%;
   padding-top: 42%;
@@ -534,6 +598,7 @@ button {
   background: var(--border-light);
   margin-bottom: 32px;
 }
+
 .hero-image-wrap img {
   position: absolute;
   inset: 0;
@@ -541,27 +606,32 @@ button {
   height: 100%;
   object-fit: cover;
 }
+
 .detail-info {
   max-width: 760px;
 }
+
 .detail-title-row {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
 }
+
 .detail-title-row h1 {
   font-size: 30px;
   font-weight: 800;
   color: var(--text-dark);
   margin: 0;
 }
+
 .detail-meta {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-bottom: 24px;
 }
+
 .detail-meta-row {
   display: flex;
   align-items: center;
@@ -569,11 +639,13 @@ button {
   font-size: 14px;
   color: var(--text-gray);
 }
+
 .detail-description {
   font-size: 15px;
   color: #4B5563;
   line-height: 1.8;
 }
+
 .fixed-cta-bar {
   position: fixed;
   bottom: 0;
@@ -584,10 +656,12 @@ button {
   padding: 16px 40px;
   z-index: 30;
 }
+
 .fixed-cta-bar-inner {
   max-width: 1440px;
   margin: 0 auto;
 }
+
 .btn-cta {
   width: 100%;
   padding: 16px 0;
@@ -608,12 +682,14 @@ button {
   margin: 0 auto;
   padding: 28px 40px 180px;
 }
+
 .summary-bar {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 28px;
 }
+
 .summary-bar-back {
   background: none;
   border: none;
@@ -622,16 +698,19 @@ button {
   display: flex;
   align-items: center;
 }
+
 .summary-title {
   font-weight: 800;
   font-size: 18px;
   color: var(--text-dark);
 }
+
 .summary-location {
   font-size: 13px;
   color: var(--text-light);
   margin-left: 8px;
 }
+
 .radius-btn {
   margin-left: auto;
   border: 1.5px solid var(--border);
@@ -643,11 +722,13 @@ button {
   background: white;
   cursor: pointer;
 }
+
 .tab-bar {
   border-bottom: 1.5px solid var(--border-light);
   margin-bottom: 20px;
   display: flex;
 }
+
 .tab-btn {
   padding: 12px 24px;
   background: none;
@@ -660,16 +741,19 @@ button {
   border-bottom: 2.5px solid transparent;
   margin-bottom: -1.5px;
 }
+
 .tab-btn.active {
   color: var(--primary);
   border-bottom-color: var(--primary);
 }
+
 .place-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-bottom: 16px;
 }
+
 .place-row {
   background: white;
   border-radius: 14px;
@@ -682,9 +766,11 @@ button {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: border-color 0.15s;
 }
+
 .place-row.checked {
   border-color: var(--primary);
 }
+
 .place-checkbox {
   width: 20px;
   height: 20px;
@@ -697,24 +783,29 @@ button {
   flex-shrink: 0;
   transition: all 0.15s;
 }
+
 .place-row.checked .place-checkbox {
   border-color: var(--primary);
   background: var(--primary);
 }
+
 .place-info {
   flex: 1;
 }
+
 .place-name {
   font-weight: 700;
   font-size: 15px;
   color: var(--text-dark);
   margin: 0;
 }
+
 .place-category {
   font-size: 12px;
   color: var(--text-light);
   margin: 2px 0 0;
 }
+
 .place-distance {
   font-size: 13px;
   font-weight: 700;
@@ -723,6 +814,7 @@ button {
   background: var(--primary-light);
   color: var(--primary);
 }
+
 .schedule-preview-card {
   background: white;
   border-radius: 20px;
@@ -731,26 +823,46 @@ button {
   margin-top: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
+
 .schedule-preview-title {
   font-size: 16px;
   font-weight: 800;
   color: var(--text-dark);
   margin: 0 0 20px;
 }
+
 .schedule-step-list {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
+
 .schedule-step {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-.step-info { flex: 1; }
-.step-name { font-weight: 600; font-size: 14px; color: var(--text-dark); }
-.step-category { font-size: 12px; color: var(--text-light); margin-left: 8px; }
-.step-distance { font-size: 12px; color: var(--text-light); }
+
+.step-info {
+  flex: 1;
+}
+
+.step-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-dark);
+}
+
+.step-category {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-left: 8px;
+}
+
+.step-distance {
+  font-size: 12px;
+  color: var(--text-light);
+}
 
 .step-num {
   width: 26px;
@@ -765,11 +877,13 @@ button {
   justify-content: center;
   flex-shrink: 0;
 }
+
 .schedule-preview-actions {
   display: flex;
   gap: 10px;
   margin-top: 22px;
 }
+
 .btn-outline-primary {
   flex: 1;
   padding: 11px 0;
@@ -781,9 +895,11 @@ button {
   font-size: 14px;
   cursor: pointer;
 }
+
 .btn-outline-primary.saved {
   background: var(--primary-light);
 }
+
 .btn-outline-gray {
   flex: 1;
   padding: 11px 0;
@@ -795,10 +911,12 @@ button {
   font-size: 14px;
   cursor: pointer;
 }
+
 .btn-outline-gray.full-width {
   width: 100%;
   flex: none;
 }
+
 .fixed-bottom-bar {
   position: fixed;
   bottom: 0;
@@ -808,6 +926,7 @@ button {
   border-top: 1px solid var(--border-light);
   z-index: 30;
 }
+
 .fixed-bottom-bar-inner {
   max-width: 1440px;
   margin: 0 auto;
@@ -816,16 +935,19 @@ button {
   align-items: center;
   justify-content: space-between;
 }
+
 .selection-count-text {
   font-size: 14px;
   font-weight: 500;
   color: var(--text-light);
   margin: 0;
 }
+
 .selection-count-text strong {
   font-weight: 800;
   color: var(--primary);
 }
+
 .btn-make-schedule {
   padding: 12px 32px;
   border-radius: 10px;
@@ -838,6 +960,7 @@ button {
   color: var(--text-light);
   cursor: not-allowed;
 }
+
 .btn-make-schedule.enabled {
   background: var(--primary);
   color: white;
@@ -851,16 +974,19 @@ button {
   margin: 0 auto;
   padding: 36px 40px 60px;
 }
+
 .page-schedule h1 {
   font-size: 24px;
   font-weight: 800;
   color: var(--text-dark);
   margin-bottom: 28px;
 }
+
 .empty-state {
   text-align: center;
   padding-top: 80px;
 }
+
 .empty-icon-circle {
   width: 68px;
   height: 68px;
@@ -871,12 +997,14 @@ button {
   justify-content: center;
   margin: 0 auto 16px;
 }
+
 .empty-text {
   font-size: 16px;
   color: var(--text-light);
   font-weight: 500;
   margin-bottom: 24px;
 }
+
 .btn-cta-medium {
   padding: 13px 28px;
   border-radius: 10px;
@@ -887,12 +1015,14 @@ button {
   border: none;
   cursor: pointer;
 }
+
 .schedule-list {
   display: flex;
   flex-direction: column;
   gap: 14px;
   max-width: 680px;
 }
+
 .schedule-card {
   background: white;
   border-radius: 18px;
@@ -900,6 +1030,7 @@ button {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
+
 .schedule-card-header {
   padding: 22px 24px;
   display: flex;
@@ -907,35 +1038,43 @@ button {
   gap: 16px;
   cursor: pointer;
 }
+
 .schedule-card-header-info {
   flex: 1;
 }
+
 .schedule-card-header-info p {
   margin: 0 0 4px;
 }
+
 .schedule-card-title {
   font-weight: 700;
   font-size: 16px;
   color: var(--text-dark);
 }
+
 .schedule-card-date {
   font-size: 12px;
   color: var(--text-light);
   margin-bottom: 6px !important;
 }
+
 .schedule-card-count {
   font-size: 13px;
   color: var(--text-gray);
 }
+
 .schedule-card-count strong {
   font-weight: 800;
   color: var(--primary);
 }
+
 .schedule-card-actions {
   display: flex;
   align-items: center;
   gap: 6px;
 }
+
 .delete-btn {
   padding: 6px 8px;
   border-radius: 8px;
@@ -946,16 +1085,20 @@ button {
   display: flex;
   align-items: center;
 }
+
 .chevron-icon {
   transition: transform 0.2s;
 }
+
 .chevron-icon.open {
   transform: rotate(180deg);
 }
+
 .schedule-card-body {
   border-top: 1.5px solid var(--border-lighter);
   padding: 20px 24px;
 }
+
 .schedule-card-body-label {
   font-size: 11px;
   font-weight: 700;
@@ -964,17 +1107,20 @@ button {
   text-transform: uppercase;
   margin-bottom: 16px;
 }
+
 .schedule-card-steps {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-bottom: 20px;
 }
+
 .schedule-card-step {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .step-num-sm {
   width: 24px;
   height: 24px;
@@ -1006,6 +1152,13 @@ button {
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
+
 .dev-toggle.raised {
   bottom: 80px;
+}
+
+/*---------------홈 아이콘-------------*/
+.icon-img {
+  width: 24px;
+  height: 24px;
 }
