@@ -47,7 +47,7 @@ const getFestivals = async (filters) => {
     return [];
   }
 };
-getFestivals().then(console.log);
+
 // 축제 상세 요청
 const getFestivalDetail = async (festivalId) => {
   try {
