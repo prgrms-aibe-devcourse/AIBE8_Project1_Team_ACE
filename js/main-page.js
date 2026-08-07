@@ -55,7 +55,6 @@ const handleCardClick = (event) => {
   location.href = `detail.html?contentId=${festivalId}`;
 };
 
-document.addEventListener("DOMContentLoaded", async () => {
-  await renderHeader();
+document.addEventListener("DOMContentLoaded", () => {
   getFestivalList();
 });
