@@ -24,6 +24,7 @@ const renderHeader = async () => {
   const isLoggedIn =
     currentUserResult.ok && Boolean(currentUserResult.data?.user);
   const rightArea = isLoggedIn // 로그인 시 페이지와 로그아웃 시 페이지
+
     ? `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
       <button id="logout-btn" class="link-btn">로그아웃</button>`
     : `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
