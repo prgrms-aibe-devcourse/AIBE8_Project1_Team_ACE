@@ -1,11 +1,10 @@
 (() => {
-  const signupForm = document.querySelector("#signup-form");
-  const signupEmailInput = document.querySelector("#signup-email");
-  const signupPasswordInput = document.querySelector("#signup-pw");
-  const signupPasswordConfirmInput =
-    document.querySelector("#signup-pw-confirm");
-  const signupNicknameInput = document.querySelector("#signup-nick");
-  const toLoginButton = document.querySelector("#to-login");
+  const signupForm = $("#signup-form");
+  const signupEmailInput = $("#signup-email");
+  const signupPasswordInput = $("#signup-pw");
+  const signupPasswordConfirmInput = $("#signup-pw-confirm");
+  const signupNicknameInput = $("#signup-nick");
+  const toLoginButton = $("#to-login");
 
   const handleSignupSubmit = async (event) => {
     event.preventDefault();

@@ -1,8 +1,8 @@
 (() => {
-  const loginForm = document.querySelector("#login-form");
-  const loginEmailInput = document.querySelector("#login-email");
-  const loginPasswordInput = document.querySelector("#login-pw");
-  const toSignupButton = document.querySelector("#to-signup");
+  const loginForm = $("#login-form");
+  const loginEmailInput = $("#login-email");
+  const loginPasswordInput = $("#login-pw");
+  const toSignupButton = $("#to-signup");
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
