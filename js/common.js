@@ -5,6 +5,10 @@
  * 공통 헤더 렌더링
  * ======================================
  */
+// ========== 요소 선택 ==========
+const $ = (sel, parent = document) => parent.querySelector(sel);
+const $$ = (sel, parent = document) => Array.from(parent.querySelectorAll(sel));
+
 const renderHeader = async () => {
   const header = document.querySelector("#site-header");
   const rightArea = (await Auth.isLoggedIn()) // 로그인 시 페이지와 로그아웃 시 페이지
@@ -106,3 +110,4 @@ getQueryParam("test");
 document.addEventListener("DOMContentLoaded", async () => {
   await renderHeader();
 });
+
