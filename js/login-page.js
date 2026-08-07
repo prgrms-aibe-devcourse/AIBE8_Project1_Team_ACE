@@ -2,6 +2,7 @@
   const loginForm = document.querySelector("#login-form");
   const loginEmailInput = document.querySelector("#login-email");
   const loginPasswordInput = document.querySelector("#login-pw");
+  const toSignupButton = document.querySelector("#to-signup");
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
@@ -22,5 +23,10 @@
     window.location.href = "index.html";
   };
 
+  const handleSignupClick = () => {
+    window.location.href = "signup.html";
+  };
+
   loginForm.addEventListener("submit", handleLoginSubmit);
+  toSignupButton.addEventListener("click", handleSignupClick);
 })();
