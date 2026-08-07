@@ -18,7 +18,7 @@ if (!Auth.isLoggedIn) {
 
 
 const renderHeader = async () => {
-  const header = document.querySelector("#site-header");
+  const header = $("#site-header");
   const rightArea = (await Auth.isLoggedIn()) // 로그인 시 페이지와 로그아웃 시 페이지
     ? `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
       <button id="logout-btn" class="link-btn">로그아웃</button>`
@@ -39,31 +39,31 @@ const renderHeader = async () => {
     </div>
       `;
 
-  const homeBtn = document.querySelector("#home-btn");
+  const homeBtn = $("#home-btn");
   homeBtn.addEventListener("click", () => {
     location.href = "index.html";
   });
 
-  const scheduleBtn = document.querySelector("#schedule-btn");
+  const scheduleBtn = $("#schedule-btn");
   scheduleBtn.addEventListener("click", () => {
     location.href = "schedule.html";
   });
 
-  const loginBtn = document.querySelector("#login-btn");
+  const loginBtn = $("#login-btn");
   if (loginBtn) {
     loginBtn.addEventListener("click", () => {
       location.href = "login.html";
     });
   }
 
-  const signupBtn = document.querySelector("#signup-btn");
+  const signupBtn = $("#signup-btn");
   if (signupBtn) {
     signupBtn.addEventListener("click", () => {
       location.href = "signup.html";
     });
   }
 
-  const logoutBtn = document.querySelector("#logout-btn");
+  const logoutBtn = $("#logout-btn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {
       await window.Auth.signOut();

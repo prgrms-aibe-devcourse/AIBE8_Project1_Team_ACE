@@ -7,7 +7,7 @@
  */
 
 const getFestivalList = async () => {
-  const container = document.querySelector("#festival-grid");
+  const container = $("#festival-grid");
   showLoading(container);
 
   const festivals = await getFestivals();
@@ -31,7 +31,7 @@ const createFestivalCardHTML = (festival) => {
 };
 
 const renderFestivalList = (festivals) => {
-  const container = document.querySelector("#festival-grid");
+  const container = $("#festival-grid");
   if (!container) return;
 
   if (festivals.length === 0) {
@@ -43,7 +43,7 @@ const renderFestivalList = (festivals) => {
 };
 
 const registerCardClickHandlers = () => {
-  const cards = document.querySelectorAll(".festival-card");
+  const cards = $$(".festival-card");
 
   cards.forEach((card) => {
     card.addEventListener("click", handleCardClick);
