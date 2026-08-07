@@ -40,31 +40,6 @@ const getCurrentPageFestivals = () => {
   return allFestivals.slice(startIndex, endIndex);
 };
 
-const handleNextPageClick = () => {
-  currentPage += 1;
-  renderFestivalList();
-};
-
-const handlePrevPageClick = () => {
-  currentPage -= 1;
-  renderFestivalList();
-};
-
-const renderPagination = () => {
-  const totalPages = Math.ceil(allFestivals.length / PAGE_SIZE);
-  let pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
-  const container = $("#pagination");
-
-  container.innerHTML = pageNumbers.map(createPageButtonHTML).join("");
-};
-
-const createPageButtonHTML = (pageNumber) => {
-  return `<button class="${pageNumber === currentPage ? "page-num-btn active" : "page-num-btn"}" data-page="${pageNumber}">${pageNumber}</button>`;
-};
-
 const renderFestivalList = () => {
   const container = $("#festival-grid");
   if (!container) return;
@@ -92,7 +67,53 @@ const handleCardClick = (event) => {
   location.href = `detail.html?contentId=${festivalId}`;
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  getFestivalList();
+const renderPagination = () => {
+  const totalPages = Math.ceil(allFestivals.length / PAGE_SIZE);
+  let pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+  const container = $("#pagination");
+
+  container.innerHTML = pageNumbers.map(createPageButtonHTML).join("");
+  registerPageButtonHandlers();
+};
+
+const createPageButtonHTML = (pageNumber) => {
+  return `<button class="${pageNumber === currentPage ? "page-num-btn active" : "page-num-btn"}" data-page="${pageNumber}">${pageNumber}</button>`;
+};
+
+const registerPageButtonHandlers = () => {
+  const pageButtons = $$(".page-num-btn");
+
+  pageButtons.forEach((pageButton) => {
+    pageButton.addEventListener("click", handlePageButtonClick);
+  });
+};
+
+const handlePageButtonClick = (event) => {
+  const pageNumber = event.currentTarget.dataset.page;
+  currentPage = Number(pageNumber);
+  renderFestivalList();
+  renderPagination();
+};
+
+const handleNextPageClick = () => {
+  const totalPages = Math.ceil(allFestivals.length / PAGE_SIZE);
+  if (currentPage === totalPages) return;
+  currentPage += 1;
+  renderFestivalList();
+  renderPagination();
+};
+
+const handlePrevPageClick = () => {
+  if (currentPage === 1) return;
+  currentPage -= 1;
+  renderFestivalList();
+  renderPagination();
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await getFestivalList();
   renderPagination();
 });
