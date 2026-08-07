@@ -10,16 +10,28 @@
 const $ = (sel, parent = document) => parent.querySelector(sel);
 const $$ = (sel, parent = document) => Array.from(parent.querySelectorAll(sel));
 
-// TODO: bam090이 Auth.isLoggedIn() 구현 완료하면 이 블록 삭제
-if (!window.Auth) window.Auth = {};
-if (!Auth.isLoggedIn) {
-  Auth.isLoggedIn = async () => false;
-}
+const handleLogoutClick = async () => {
+  const signOutResult = await window.Auth.signOut();
 
+  if (!signOutResult.ok) {
+    window.alert(signOutResult.error?.message ?? "로그아웃에 실패했습니다.");
+    return;
+  }
+
+  await renderHeader();
+};
 
 const renderHeader = async () => {
+<<<<<<< HEAD
   const header = $("#site-header");
   const rightArea = (await Auth.isLoggedIn()) // 로그인 시 페이지와 로그아웃 시 페이지
+=======
+  const header = document.querySelector("#site-header");
+  const currentUserResult = await window.Auth.getCurrentUser();
+  const isLoggedIn =
+    currentUserResult.ok && Boolean(currentUserResult.data?.user);
+  const rightArea = isLoggedIn // 로그인 시 페이지와 로그아웃 시 페이지
+>>>>>>> dev
     ? `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
       <button id="logout-btn" class="link-btn">로그아웃</button>`
     : `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
@@ -65,10 +77,7 @@ const renderHeader = async () => {
 
   const logoutBtn = $("#logout-btn");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", async () => {
-      await window.Auth.signOut();
-      location.href = "index.html";
-    });
+    logoutBtn.addEventListener("click", handleLogoutClick);
   }
 };
 
@@ -118,4 +127,3 @@ const getQueryParam = (name) => {
 document.addEventListener("DOMContentLoaded", async () => {
   await renderHeader();
 });
-
