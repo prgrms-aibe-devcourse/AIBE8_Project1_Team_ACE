@@ -5,11 +5,9 @@
  * 공통 헤더 렌더링
  * ======================================
  */
-const isLoggedIn = () => false; // TODO : 로그인 기능 개발 시 지워줄 것
-
-const renderHeader = () => {
+const renderHeader = async () => {
   const header = document.querySelector("#site-header");
-  const rightArea = isLoggedIn() // 로그인 시 페이지와 로그아웃 시 페이지
+  const rightArea = (await Auth.isLoggedIn()) // 로그인 시 페이지와 로그아웃 시 페이지
     ? `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
       <button id="logout-btn" class="link-btn">로그아웃</button>`
     : `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
@@ -55,13 +53,56 @@ const renderHeader = () => {
 
   const logoutBtn = document.querySelector("#logout-btn");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      logout();
+    logoutBtn.addEventListener("click", async () => {
+      await window.Auth.signOut();
       location.href = "index.html";
     });
   }
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  renderHeader();
+const escapeHtml = (value) => {
+  if (value === null || value === undefined) return "";
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+};
+
+const formatDate = (dateString) => {
+  if (
+    dateString === null ||
+    dateString === undefined ||
+    dateString.length !== 8
+  )
+    return "";
+  let yyyy = dateString.slice(0, 4);
+  let mm = dateString.slice(4, 6);
+  let dd = dateString.slice(6, 8);
+
+  return `${yyyy}.${mm}.${dd}`;
+};
+
+const showLoading = (container) => {
+  if (!container) return;
+  container.innerHTML = `<div class="loading-state">로딩중</div>`;
+};
+
+const showEmpty = (container, message) => {
+  if (!container) return;
+  container.innerHTML = `<div class="empty-state">${escapeHtml(message)}</div>`;
+};
+
+const showError = (container, message) => {
+  if (!container) return;
+  container.innerHTML = `<div class="error-state">${escapeHtml(message)}</div>`;
+};
+
+const getQueryParam = (name) => {
+  return new URLSearchParams(location.search).get(name);
+};
+getQueryParam("test");
+document.addEventListener("DOMContentLoaded", async () => {
+  await renderHeader();
 });
