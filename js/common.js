@@ -19,16 +19,12 @@ const handleLogoutClick = async () => {
 };
 
 const renderHeader = async () => {
-<<<<<<< HEAD
   const header = $("#site-header");
-  const rightArea = (await Auth.isLoggedIn()) // 로그인 시 페이지와 로그아웃 시 페이지
-=======
-  const header = document.querySelector("#site-header");
   const currentUserResult = await window.Auth.getCurrentUser();
   const isLoggedIn =
     currentUserResult.ok && Boolean(currentUserResult.data?.user);
   const rightArea = isLoggedIn // 로그인 시 페이지와 로그아웃 시 페이지
->>>>>>> dev
+
     ? `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
       <button id="logout-btn" class="link-btn">로그아웃</button>`
     : `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
