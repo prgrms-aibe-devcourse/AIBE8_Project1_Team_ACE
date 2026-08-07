@@ -5,9 +5,17 @@
  * 공통 헤더 렌더링
  * ======================================
  */
+
 // ========== 요소 선택 ==========
 const $ = (sel, parent = document) => parent.querySelector(sel);
 const $$ = (sel, parent = document) => Array.from(parent.querySelectorAll(sel));
+
+// TODO: bam090이 Auth.isLoggedIn() 구현 완료하면 이 블록 삭제
+if (!window.Auth) window.Auth = {};
+if (!Auth.isLoggedIn) {
+  Auth.isLoggedIn = async () => false;
+}
+
 
 const renderHeader = async () => {
   const header = document.querySelector("#site-header");
@@ -106,7 +114,7 @@ const showError = (container, message) => {
 const getQueryParam = (name) => {
   return new URLSearchParams(location.search).get(name);
 };
-getQueryParam("test");
+
 document.addEventListener("DOMContentLoaded", async () => {
   await renderHeader();
 });
