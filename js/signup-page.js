@@ -5,6 +5,7 @@
   const signupPasswordConfirmInput =
     document.querySelector("#signup-pw-confirm");
   const signupNicknameInput = document.querySelector("#signup-nick");
+  const toLoginButton = document.querySelector("#to-login");
 
   const handleSignupSubmit = async (event) => {
     event.preventDefault();
@@ -34,5 +35,10 @@
     window.location.href = "login.html";
   };
 
+  const handleLoginClick = () => {
+    window.location.href = "login.html";
+  };
+
   signupForm.addEventListener("submit", handleSignupSubmit);
+  toLoginButton.addEventListener("click", handleLoginClick);
 })();
