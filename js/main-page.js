@@ -9,12 +9,16 @@
 let allFestivals = [];
 let currentPage = 1;
 const PAGE_SIZE = 4;
+let filteredFestivals = [];
+let selectedArea = "";
+let selectedPeriod = "";
 
+// ------------------------ 축제 목록 ------------------------//
 const getFestivalList = async () => {
   const container = $("#festival-grid");
   showLoading(container);
-
   allFestivals = await getFestivals();
+  filteredFestivals = allFestivals;
 
   renderFestivalList();
 };
@@ -37,7 +41,7 @@ const createFestivalCardHTML = (festival) => {
 const getCurrentPageFestivals = () => {
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const endIndex = startIndex + PAGE_SIZE;
-  return allFestivals.slice(startIndex, endIndex);
+  return filteredFestivals.slice(startIndex, endIndex);
 };
 
 const renderFestivalList = () => {
@@ -67,8 +71,9 @@ const handleCardClick = (event) => {
   location.href = `detail.html?contentId=${festivalId}`;
 };
 
+// ------------------------ 페이지네이션 ------------------------//
 const renderPagination = () => {
-  const totalPages = Math.ceil(allFestivals.length / PAGE_SIZE);
+  const totalPages = Math.ceil(filteredFestivals.length / PAGE_SIZE);
   let pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
@@ -99,7 +104,7 @@ const handlePageButtonClick = (event) => {
 };
 
 const handleNextPageClick = () => {
-  const totalPages = Math.ceil(allFestivals.length / PAGE_SIZE);
+  const totalPages = Math.ceil(filteredFestivals.length / PAGE_SIZE);
   if (currentPage === totalPages) return;
   currentPage += 1;
   renderFestivalList();
@@ -113,7 +118,54 @@ const handlePrevPageClick = () => {
   renderPagination();
 };
 
+// ------------------------ 드롭박스 ------------------------//
+const parseDate = (dateString) => {
+  const year = Number(dateString.slice(0, 4));
+  const month = Number(dateString.slice(4, 6));
+  const day = Number(dateString.slice(6, 8));
+  return new Date(year, month - 1, day);
+};
+
+const filters = () => {
+  filteredFestivals = allFestivals.filter((f) => {
+    const todayStart = new Date();
+    const todayEnd = new Date();
+    todayEnd.setDate(todayEnd.getDate() + 7);
+
+    const filteredPeriod =
+      selectedPeriod === "week"
+        ? !(
+            parseDate(f.eventEndDate) < todayStart ||
+            parseDate(f.eventStartDate) > todayEnd
+          )
+        : true;
+
+    const filteredArea =
+      selectedArea === "all" || selectedArea === ""
+        ? true
+        : f.address.includes(selectedArea);
+
+    return filteredPeriod && filteredArea;
+  });
+
+  currentPage = 1;
+  renderFestivalList();
+  renderPagination();
+};
+
+const handlePeriodChange = (e) => {
+  selectedPeriod = e.currentTarget.value;
+  filters();
+};
+
+const handleAreaChange = (e) => {
+  selectedArea = e.currentTarget.value;
+  filters();
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
   await getFestivalList();
   renderPagination();
+  $("#periodFilter").addEventListener("change", handlePeriodChange);
+  $("#areaFilter").addEventListener("change", handleAreaChange);
 });
