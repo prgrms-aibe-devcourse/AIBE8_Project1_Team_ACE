@@ -436,6 +436,13 @@ button {
   margin: 0;
 }
 
+.pagination-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
 .pagination {
   display: flex;
   align-items: center;
@@ -1168,7 +1175,8 @@ button {
 .loading-state {
   text-align: center;
   padding-top: 80px;
-  grid-column: 1 / -1;  /* grid 안에서 전체 너비 차지하게 */
+  grid-column: 1 / -1;
+  /* grid 안에서 전체 너비 차지하게 */
 }
 
 /* 오류 상태 */
@@ -1179,7 +1187,7 @@ button {
   grid-column: 1 / -1;
 }
 
-.empty-state{
+.empty-state {
   text-align: center;
   padding-top: 80px;
   grid-column: 1 / -1;
