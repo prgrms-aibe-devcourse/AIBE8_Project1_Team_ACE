@@ -27,7 +27,7 @@ const renderTabs = () => {
   const $tabBtns = $$(".tab-btn");
   $tabBtns.forEach(($btn) => {
     $btn.addEventListener("click",(e) => {
-      const category = e.currentTarget.dataset.categoey;
+      const category = e.currentTarget.dataset.category;
       handlerTabClick(category);
     })
   })
@@ -37,7 +37,7 @@ const renderTabs = () => {
 // ========== 4. 탭 클릭 처리 ==========
 const handlerTabClick = (category) => {
   // 이미 클릭된 탭이라면 동작하지 않음
-  if(!catogory === currentCategory) return;
+  if(category === currentCategory) return;
 
   // 1. 다른 탭을 눌렀을 때
   currentCategory = category;
@@ -46,7 +46,7 @@ const handlerTabClick = (category) => {
   renderTabs();
 
   // 새로운 데이터를 가져옴
-  loacPlaeces();
+  loadPlaces();
 };
 
 // ========== 5. 장소 목록 불러오기 ==========
@@ -59,7 +59,7 @@ const loadPlaces = async () => {
   try {
     // 실제 축제 좌표 데이터 연동
     const festival = await getFestivalDetail(festivalId);
-    const { mapx: longitude, mapy: latitude} = festival;
+    const { longitude, latitude} = festival;
 
     const places = await getNearbyPlaces({
       longitude,
@@ -69,7 +69,8 @@ const loadPlaces = async () => {
     });
     
     // 장소 목록 렌더링 표시
-    $placeList.innerHTML = places.map( place => { `
+    $placeList.innerHTML = places.map( place => { 
+      return `
       <div class="place-item">
         <h4>${place.place_name}</h4>
         <p>${place.address_name}</p>
@@ -77,7 +78,7 @@ const loadPlaces = async () => {
       </div>
       `}).join("");
   } catch (err) {
-    console.err("장소를 찾지 못했습니다.");
+    console.error("장소를 찾지 못했습니다.");
     $placeList.innerHTML = "<div>장소 목록을 불러오지 못했습니다.</div>";
   }
 };
