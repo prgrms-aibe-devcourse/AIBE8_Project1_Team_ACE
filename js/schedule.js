@@ -49,7 +49,25 @@
     }
   };
 
+  const getAll = async () => {
+    try {
+      const supabaseClient = getSupabaseClient();
+      const { data, error } = await supabaseClient
+        .from("schedules")
+        .select()
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        return { ok: false, error };
+      }
+      return { ok: true, data };
+    } catch (error) {
+      return { ok: false, error };
+    }
+  };
+
   window.Schedule = {
     create,
+    getAll,
   };
 })();
