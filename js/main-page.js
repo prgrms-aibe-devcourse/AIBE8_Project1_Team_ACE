@@ -85,7 +85,9 @@ const renderPagination = () => {
 };
 
 const createPageButtonHTML = (pageNumber) => {
-  return `<button class="${pageNumber === currentPage ? "page-num-btn active" : "page-num-btn"}" data-page="${pageNumber}">${pageNumber}</button>`;
+  return `<button class="${
+    pageNumber === currentPage ? "page-num-btn active" : "page-num-btn"
+  }" data-page="${pageNumber}">${pageNumber}</button>`;
 };
 
 const registerPageButtonHandlers = () => {
@@ -168,4 +170,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderPagination();
   $("#periodFilter").addEventListener("change", handlePeriodChange);
   $("#areaFilter").addEventListener("change", handleAreaChange);
+  $("#nextBtn").addEventListener("click", handleNextPageClick);
+  $("#prevBtn").addEventListener("click", handlePrevPageClick);
 });
