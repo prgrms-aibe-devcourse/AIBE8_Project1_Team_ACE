@@ -56,11 +56,6 @@ const getFestivalDetail = async (festivalId) => {
       MobileApp: "FestivalOtte",
       _type: "json",
       contentId: festivalId,
-      defaultYN: "Y",
-      firstImageYN: "Y",
-      addrinfoYN: "Y",
-      mapinfoYN: "Y",
-      overviewYN: "Y",
     };
     const commonQuery = Object.entries(commonParams)
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
