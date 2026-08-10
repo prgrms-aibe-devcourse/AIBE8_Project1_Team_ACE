@@ -159,6 +159,11 @@ const getNearbyPlaces = async ({ longitude, latitude, category, radius = 5000 })
 
 // Kakao 응답 변환
 const mapToPlace = (doc, category) => {
+  const categoryParts = (doc.category_name || "")
+    .split(">")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  const categoryName = categoryParts[1] || categoryParts[categoryParts.length - 1] || "";
   return {
     id: doc.id,
     name: doc.place_name,
