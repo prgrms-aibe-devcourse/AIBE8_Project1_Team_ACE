@@ -6,7 +6,6 @@
  * ======================================
  */
 
-
 const handleLogoutClick = async () => {
   const signOutResult = await window.Auth.signOut();
 
@@ -18,14 +17,23 @@ const handleLogoutClick = async () => {
   await renderHeader();
 };
 
+const getScheduleCount = async () => {
+  const supabaseClient = window.supabaseClient;
+  const { data, error } = await supabaseClient.from("schedules").select("id");
+
+  if (error) return 0;
+  return data.length;
+};
+
 const renderHeader = async () => {
   const header = $("#site-header");
   const currentUserResult = await window.Auth.getCurrentUser();
   const isLoggedIn =
     currentUserResult.ok && Boolean(currentUserResult.data?.user);
+  const count = isLoggedIn ? await getScheduleCount() : 0;
   const rightArea = isLoggedIn // 로그인 시 페이지와 로그아웃 시 페이지
+    ? `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}<p class="badge-count">${count}</p></button>
 
-    ? `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
       <button id="logout-btn" class="link-btn">로그아웃</button>`
     : `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
       <button id="login-btn" class="link-btn">로그인</button>
