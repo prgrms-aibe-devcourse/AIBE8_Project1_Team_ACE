@@ -13,6 +13,13 @@ let filteredFestivals = [];
 let selectedArea = "";
 let selectedPeriod = "";
 
+const parseDate = (dateString) => {
+  const year = Number(dateString.slice(0, 4));
+  const month = Number(dateString.slice(4, 6));
+  const day = Number(dateString.slice(6, 8));
+  return new Date(year, month - 1, day);
+};
+
 // ------------------------ 축제 목록 ------------------------//
 const getFestivalList = async () => {
   const container = $("#festival-grid");
@@ -24,10 +31,16 @@ const getFestivalList = async () => {
 };
 
 const createFestivalCardHTML = (festival) => {
+  const status =
+    new Date() >= parseDate(festival.eventStartDate)
+      ? `<span class="status-badge active festival-card-badge"><span class="status-dot"></span>행사중</span>`
+      : `<span class="status-badge upcoming festival-card-badge"><span class="status-dot"></span>예정</span>`;
+
   return `
     <div class="festival-card" data-festival-id="${escapeHtml(festival.id)}">
       <div class="festival-card-image-wrap">
         <img src="${escapeHtml(festival.image)}" />
+        ${status}
       </div>
       <div class="festival-card-body">
         <p class="festival-card-title">${escapeHtml(festival.title)}</p>
@@ -121,13 +134,6 @@ const handlePrevPageClick = () => {
 };
 
 // ------------------------ 드롭박스 ------------------------//
-const parseDate = (dateString) => {
-  const year = Number(dateString.slice(0, 4));
-  const month = Number(dateString.slice(4, 6));
-  const day = Number(dateString.slice(6, 8));
-  return new Date(year, month - 1, day);
-};
-
 const filters = () => {
   filteredFestivals = allFestivals.filter((f) => {
     const todayStart = new Date();
