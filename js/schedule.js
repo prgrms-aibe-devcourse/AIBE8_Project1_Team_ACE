@@ -66,8 +66,34 @@
     }
   };
 
+  const remove = async (scheduleId) => {
+    try {
+      const supabaseClient = getSupabaseClient();
+      const { data, error } = await supabaseClient
+        .from("schedules")
+        .delete()
+        .eq("id", scheduleId)
+        .select("id")
+        .maybeSingle();
+
+      if (error) {
+        return { ok: false, error };
+      }
+      if (!data) {
+        return {
+          ok: false,
+          error: new Error("삭제할 일정을 찾을 수 없습니다."),
+        };
+      }
+      return { ok: true, data };
+    } catch (error) {
+      return { ok: false, error };
+    }
+  };
+
   window.Schedule = {
     create,
     getAll,
+    remove,
   };
 })();
