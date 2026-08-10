@@ -184,9 +184,68 @@ const renderSelectionState = () => {
   }
 };
 
-// ========== 12. 페이지 초기화 ==========
+// ========== 12. 날짜 포맷 변환 (YYYYMMDD -> YYYY-MM-DD) ==========
+// schedules 테이블의 event_start_date/event_end_date는 date 타입이라
+// "20250815" 같은 TourAPI 원본 포맷을 "2025-08-15"로 바꿔줘야 함
+const toIsoDate = (dateString) => {
+  if (!dateString || dateString.length !== 8) return null;
+  return `${dateString.slice(0, 4)}-${dateString.slice(4, 6)}-${dateString.slice(6, 8)}`;
+};
+
+// ========== 13. 일정 만들기 ==========
+const handleMakeScheduleClick = async () => {
+  if (!currentFestival || selectedPlaces.size === 0) return;
+
+  const eventStartDate = toIsoDate(currentFestival.eventStartDate);
+  if (!eventStartDate) {
+    window.alert("축제 시작일 정보가 없어 일정을 만들 수 없습니다.");
+    return;
+  }
+
+  // 로그인한 사용자만 일정을 저장할 수 있음 (schedules 테이블 RLS 정책)
+  const currentUserResult = await window.Auth.getCurrentUser();
+  const isLoggedIn = currentUserResult.ok && Boolean(currentUserResult.data?.user);
+
+  if (!isLoggedIn) {
+    window.alert("로그인이 필요해요");
+    location.href = "login.html";
+    return;
+  }
+
+  const $scheduleBtn = $("#make-schedule-btn");
+  if ($scheduleBtn) $scheduleBtn.disabled = true;
+
+  const places = Array.from(selectedPlaces.values());
+
+  const result = await window.Schedule.create({
+    festivalId,
+    festivalTitle: currentFestival.title,
+    eventStartDate,
+    eventEndDate: toIsoDate(currentFestival.eventEndDate),
+    places,
+  });
+
+  if (!result.ok) {
+    window.alert(result.error?.message ?? "일정을 만들지 못했습니다.");
+    renderSelectionState(); // 버튼 활성화 상태 복구
+    return;
+  }
+
+  window.alert("일정이 만들어졌어요!");
+  location.href = "schedule.html";
+};
+
+const initMakeScheduleButton = () => {
+  const $scheduleBtn = $("#make-schedule-btn");
+  if (!$scheduleBtn) return;
+
+  $scheduleBtn.addEventListener("click", handleMakeScheduleClick);
+};
+
+// ========== 14. 페이지 초기화 ==========
 const initNearbyPage = async () => {
   initBackButton();
+  initMakeScheduleButton();
 
   const $placeList = $("#place-list");
 
