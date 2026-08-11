@@ -285,6 +285,7 @@ const handleSaveScheduleClick = async () => {
     $saveBtn.classList.add("saved");
   }
   window.alert("내 일정표에 추가됐어요!");
+  await renderHeader();
 };
 
 // ========== 15. 공유 링크 복사 ==========
