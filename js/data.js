@@ -11,6 +11,7 @@ const mapToFestival = (item) => {
     image: resolveFestivalImage(item),
     overview: item.overview ?? "",
     lclsSystm3: item.lclsSystm3 ?? "",
+    
   };
 };
 
@@ -39,6 +40,7 @@ const mapCacheRowToFestival = (row) => {
     latitude: row.latitude,
     image: row.image ?? "",
     overview: row.overview ?? "",
+    lclsSystm3: row.lcls_systm3 ?? "",
   };
 };
 
@@ -56,6 +58,7 @@ const upsertFestivalsCache = async (festivals) => {
       longitude: festival.longitude,
       latitude: festival.latitude,
       image: festival.image,
+      lcls_systm3: festival.lclsSystm3,
       synced_at: new Date().toISOString(),
     };
 

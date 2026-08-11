@@ -1,0 +1,1 @@
+alter table public.festivals add column lcls_systm3 text;
