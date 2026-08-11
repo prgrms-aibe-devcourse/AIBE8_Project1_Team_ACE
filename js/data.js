@@ -10,12 +10,111 @@ const mapToFestival = (item) => {
     latitude: item.mapy ? Number(item.mapy) : null,
     image: resolveFestivalImage(item),
     overview: item.overview ?? "",
-    lclsSystm3: item.lclsSystm3 ?? "",
   };
+};
+
+// ========== TourAPI 응답 Supabase 캐싱 ==========
+// TourAPI는 호출 횟수 제한이 있어서, 같은 데이터를 계속 새로 받아오지 않고
+// Supabase festivals/cache_meta 테이블에 잠깐(TTL) 저장해두고 재사용한다.
+const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6시간
+
+// 마지막 동기화 시각이 TTL 이내인지 확인
+const isCacheFresh = (syncedAt) => {
+  if (!syncedAt) return false;
+  const syncedTime = new Date(syncedAt).getTime();
+  if (Number.isNaN(syncedTime)) return false;
+  return Date.now() - syncedTime < CACHE_TTL_MS;
+};
+
+// festivals 테이블 행 -> 우리 축제 객체 모양으로 변환
+const mapCacheRowToFestival = (row) => {
+  return {
+    id: row.content_id,
+    title: row.title ?? "",
+    eventStartDate: row.event_start_date ?? "",
+    eventEndDate: row.event_end_date ?? "",
+    address: row.address ?? "",
+    longitude: row.longitude,
+    latitude: row.latitude,
+    image: row.image ?? "",
+    overview: row.overview ?? "",
+  };
+};
+
+// 축제 목록/상세 결과를 festivals 테이블에 upsert (캐시 갱신)
+const upsertFestivalsCache = async (festivals) => {
+  if (!window.supabaseClient || festivals.length === 0) return;
+
+  const rows = festivals.map((festival) => ({
+    content_id: festival.id,
+    title: festival.title,
+    event_start_date: festival.eventStartDate,
+    event_end_date: festival.eventEndDate,
+    address: festival.address,
+    longitude: festival.longitude,
+    latitude: festival.latitude,
+    image: festival.image,
+    overview: festival.overview,
+    synced_at: new Date().toISOString(),
+  }));
+
+  const { error } = await window.supabaseClient.from("festivals").upsert(rows);
+  if (error) console.log("festivals 캐시 저장 실패", error);
+};
+
+// cache_meta에 "festival_list" 동기화 시각 기록 (목록 전체를 언제 새로 받았는지)
+const markFestivalListSynced = async () => {
+  if (!window.supabaseClient) return;
+
+  const { error } = await window.supabaseClient
+    .from("cache_meta")
+    .upsert({ cache_key: "festival_list", synced_at: new Date().toISOString() });
+
+  if (error) console.log("cache_meta 갱신 실패", error);
+};
+
+// 캐시된 축제 목록 조회 - "festival_list" 동기화가 TTL 이내일 때만 사용
+const getCachedFestivalList = async () => {
+  if (!window.supabaseClient) return null;
+
+  const { data: metaRow, error: metaError } = await window.supabaseClient
+    .from("cache_meta")
+    .select("synced_at")
+    .eq("cache_key", "festival_list")
+    .maybeSingle();
+
+  if (metaError || !metaRow || !isCacheFresh(metaRow.synced_at)) return null;
+
+  const { data: rows, error } = await window.supabaseClient
+    .from("festivals")
+    .select()
+    .order("event_start_date", { ascending: true });
+
+  if (error || !rows || rows.length === 0) return null;
+
+  return rows.map(mapCacheRowToFestival);
+};
+
+// 캐시된 축제 상세 조회 - 해당 축제 행의 synced_at이 TTL 이내일 때만 사용
+const getCachedFestivalDetail = async (festivalId) => {
+  if (!window.supabaseClient) return null;
+
+  const { data: row, error } = await window.supabaseClient
+    .from("festivals")
+    .select()
+    .eq("content_id", festivalId)
+    .maybeSingle();
+
+  if (error || !row || !isCacheFresh(row.synced_at)) return null;
+
+  return mapCacheRowToFestival(row);
 };
 
 // 축제 목록 요청
 const getFestivals = async (filters) => {
+  const cached = await getCachedFestivalList();
+  if (cached) return cached;
+
   const today = new Date();
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, "0");
@@ -42,7 +141,12 @@ const getFestivals = async (filters) => {
     const response = await fetch(url);
     const data = await response.json();
     const items = parseTourApiResponse(data);
-    return items.map(mapToFestival);
+    const festivals = items.map(mapToFestival);
+
+    await upsertFestivalsCache(festivals);
+    await markFestivalListSynced();
+
+    return festivals;
   } catch (err) {
     console.log("에러발생", err);
     return [];
@@ -51,6 +155,9 @@ const getFestivals = async (filters) => {
 
 // 축제 상세 요청
 const getFestivalDetail = async (festivalId) => {
+  const cached = await getCachedFestivalDetail(festivalId);
+  if (cached) return cached;
+
   try {
     const commonParams = {
       MobileOS: "ETC",
@@ -92,7 +199,11 @@ const getFestivalDetail = async (festivalId) => {
       eventenddate: introItem.eventenddate,
     };
 
-    return mapToFestival(merged);
+    const festival = mapToFestival(merged);
+
+    await upsertFestivalsCache([festival]);
+
+    return festival;
   } catch (err) {
     console.log("에러발생", err);
     return null;
@@ -160,11 +271,6 @@ const getNearbyPlaces = async ({ longitude, latitude, category, radius = 5000 })
 
 // Kakao 응답 변환
 const mapToPlace = (doc, category) => {
-  const categoryParts = (doc.category_name || "")
-    .split(">")
-    .map((part) => part.trim())
-    .filter(Boolean);
-  const categoryName = categoryParts[1] || categoryParts[categoryParts.length - 1] || "";
   return {
     id: doc.id,
     name: doc.place_name,
