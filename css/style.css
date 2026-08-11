@@ -138,9 +138,10 @@ button {
 }
 
 .avatar {
-  width: 32px;
   height: 32px;
-  border-radius: 50%;
+  padding: 0 12px;
+  border-radius: 16px;
+  white-space: nowrap;
   background: var(--primary);
   color: white;
   font-size: 13px;

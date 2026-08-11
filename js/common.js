@@ -31,17 +31,17 @@ const renderHeader = async () => {
   const isLoggedIn =
     currentUserResult.ok && Boolean(currentUserResult.data?.user);
   const nickname = isLoggedIn
-    ? currentUserResult.data.user.user_metadata.nickname
+    ? currentUserResult.data.user.user_metadata.nickname ?? "사용자"
     : "";
   const count = isLoggedIn ? await getScheduleCount() : 0;
 
   const rightArea = isLoggedIn // 로그인 시 페이지와 로그아웃 시 페이지
     ? `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}<p class="badge-count">${count}</p></button>
-    <span class="avatar">${escapeHtml(nickname)}</span>
-      <button id="logout-btn" class="link-btn">로그아웃</button>`
+        <span class="avatar">${escapeHtml(nickname)}님</span>
+        <button id="logout-btn" class="link-btn">로그아웃</button>`
     : `<button id="schedule-btn" class="icon-btn">${getIcon("schedule")}</button>
-      <button id="login-btn" class="link-btn">로그인</button>
-      <button id="signup-btn" class="btn-primary-small">회원가입</button>`;
+        <button id="login-btn" class="link-btn">로그인</button>
+        <button id="signup-btn" class="btn-primary-small">회원가입</button>`;
 
   header.innerHTML = `
     <div class="site-header-inner">
