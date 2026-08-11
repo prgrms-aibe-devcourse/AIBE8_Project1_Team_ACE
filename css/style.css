@@ -346,6 +346,11 @@ button {
   cursor: pointer;
 }
 
+.tag-btn.active{
+  background-color: #2563EB;
+  color: white;
+}
+
 .festival-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

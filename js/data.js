@@ -10,6 +10,7 @@ const mapToFestival = (item) => {
     latitude: item.mapy ? Number(item.mapy) : null,
     image: resolveFestivalImage(item),
     overview: item.overview ?? "",
+    lclsSystm3: item.lclsSystm3 ?? "",
   };
 };
 

@@ -12,6 +12,9 @@ const PAGE_SIZE = 4;
 let filteredFestivals = [];
 let selectedArea = "";
 let selectedPeriod = "";
+let selectedTour = "";
+let selectedCulture = "";
+let selectedTraditional = "";
 
 const parseDate = (dateString) => {
   const year = Number(dateString.slice(0, 4));
@@ -153,7 +156,26 @@ const filters = () => {
         ? true
         : f.address.includes(selectedArea);
 
-    return filteredPeriod && filteredArea;
+    // ------------------------ 태그 ------------------------ //
+    const tourFiltered =
+      selectedTour === "tour" ? f.lclsSystm3 === "EV010100" : true;
+
+    const cultureFiltered =
+      selectedCulture === "culture" ? f.lclsSystm3 === "EV010200" : true;
+
+    const traditionalFiltered =
+      selectedTraditional === "traditional"
+        ? f.lclsSystm3 === "EV010400"
+        : true;
+    // ---------------------------------------------------- //
+
+    return (
+      filteredPeriod &&
+      filteredArea &&
+      tourFiltered &&
+      cultureFiltered &&
+      traditionalFiltered
+    );
   });
 
   currentPage = 1;
@@ -171,11 +193,35 @@ const handleAreaChange = (e) => {
   filters();
 };
 
+// ------------------------ 태그 ------------------------//
+const handleTourClick = (e) => {
+  const isActive = e.currentTarget.classList.toggle("active");
+  isActive ? (selectedTour = e.currentTarget.value) : (selectedTour = "");
+  filters();
+};
+
+const handleCultureClick = (e) => {
+  const isActive = e.currentTarget.classList.toggle("active");
+  isActive ? (selectedCulture = e.currentTarget.value) : (selectedCulture = "");
+  filters();
+};
+
+const handleTraditionClick = (e) => {
+  const isActive = e.currentTarget.classList.toggle("active");
+  isActive
+    ? (selectedTraditional = e.currentTarget.value)
+    : (selectedTraditional = "");
+  filters();
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
   await getFestivalList();
   renderPagination();
-  $("#periodFilter").addEventListener("change", handlePeriodChange);
-  $("#areaFilter").addEventListener("change", handleAreaChange);
+  $("#period-filter").addEventListener("change", handlePeriodChange);
+  $("#area-filter").addEventListener("change", handleAreaChange);
   $("#nextBtn").addEventListener("click", handleNextPageClick);
   $("#prevBtn").addEventListener("click", handlePrevPageClick);
+  $("#tour-btn").addEventListener("click", handleTourClick);
+  $("#culture-btn").addEventListener("click", handleCultureClick);
+  $("#traditional-btn").addEventListener("click", handleTraditionClick);
 });
