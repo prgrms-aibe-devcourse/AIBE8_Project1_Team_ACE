@@ -182,6 +182,12 @@ const renderSelectionState = () => {
     $scheduleBtn.disabled = count === 0;
     $scheduleBtn.classList.toggle("enabled", count > 0);
   }
+
+  // 미리보기가 이미 열려있는 상태라면 선택 변경사항을 바로 반영
+  const $preview = $("#schedule-preview");
+  if ($preview && $preview.children.length > 0) {
+    renderSchedulePreview();
+  }
 };
 
 // ========== 12. 날짜 포맷 변환 ==========
@@ -190,8 +196,55 @@ const toIsoDate = (dateString) => {
   return `${dateString.slice(0, 4)}-${dateString.slice(4, 6)}-${dateString.slice(6, 8)}`;
 };
 
-// ========== 13. 일정 만들기 ==========
-const handleMakeScheduleClick = async () => {
+// ========== 13. 일정 미리보기 ==========
+const renderSchedulePreview = () => {
+  const $preview = $("#schedule-preview");
+  if (!$preview) return;
+
+  if (selectedPlaces.size === 0) {
+    $preview.innerHTML = "";
+    return;
+  }
+
+  const places = Array.from(selectedPlaces.values());
+
+  const stepsHTML = places
+    .map(
+      (place, index) => `
+      <div class="schedule-step">
+        <span class="step-num">${index + 1}</span>
+        <div class="step-info">
+          <span class="step-name">${escapeHtml(place.name)}</span>
+          <span class="step-category">${escapeHtml(place.categoryName)}</span>
+        </div>
+        <span class="step-distance">${formatDistance(place.distance)}</span>
+      </div>
+    `
+    )
+    .join("");
+
+  $preview.innerHTML = `
+    <div class="schedule-preview-card">
+      <p class="schedule-preview-title">일정 미리보기</p>
+      <div class="schedule-step-list">${stepsHTML}</div>
+      <div class="schedule-preview-actions">
+        <button class="btn-outline-primary" id="save-schedule-btn">저장</button>
+        <button class="btn-outline-gray" id="copy-link-btn">공유 링크 복사</button>
+      </div>
+    </div>
+  `;
+
+  $("#save-schedule-btn")?.addEventListener("click", handleSaveScheduleClick);
+  $("#copy-link-btn")?.addEventListener("click", handleCopyLinkClick);
+};
+
+const handleMakeScheduleClick = () => {
+  if (selectedPlaces.size === 0) return;
+  renderSchedulePreview();
+};
+
+// ========== 14. 일정 저장  ==========
+const handleSaveScheduleClick = async () => {
   if (!currentFestival || selectedPlaces.size === 0) return;
 
   const eventStartDate = toIsoDate(currentFestival.eventStartDate);
@@ -210,27 +263,39 @@ const handleMakeScheduleClick = async () => {
     return;
   }
 
-  const $scheduleBtn = $("#make-schedule-btn");
-  if ($scheduleBtn) $scheduleBtn.disabled = true;
-
-  const places = Array.from(selectedPlaces.values());
+  const $saveBtn = $("#save-schedule-btn");
+  if ($saveBtn) $saveBtn.disabled = true;
 
   const result = await window.Schedule.create({
     festivalId,
     festivalTitle: currentFestival.title,
     eventStartDate,
     eventEndDate: toIsoDate(currentFestival.eventEndDate),
-    places,
+    places: Array.from(selectedPlaces.values()),
   });
 
   if (!result.ok) {
     window.alert(result.error?.message ?? "일정을 만들지 못했습니다.");
-    renderSelectionState(); // 버튼 활성화 상태 복구
+    if ($saveBtn) $saveBtn.disabled = false;
     return;
   }
 
-  window.alert("일정이 만들어졌어요!");
-  location.href = "schedule.html";
+  if ($saveBtn) {
+    $saveBtn.textContent = "저장됨";
+    $saveBtn.classList.add("saved");
+  }
+  window.alert("내 일정표에 추가됐어요!");
+};
+
+// ========== 15. 공유 링크 복사 ==========
+const handleCopyLinkClick = async () => {
+  try {
+    await navigator.clipboard.writeText(location.href);
+    window.alert("현재 페이지 링크를 복사했어요!");
+  } catch (err) {
+    console.error("링크 복사 실패", err);
+    window.alert("링크 복사에 실패했습니다.");
+  }
 };
 
 const initMakeScheduleButton = () => {
@@ -240,7 +305,7 @@ const initMakeScheduleButton = () => {
   $scheduleBtn.addEventListener("click", handleMakeScheduleClick);
 };
 
-// ========== 14. 페이지 초기화 ==========
+// ========== 16. 페이지 초기화 ==========
 const initNearbyPage = async () => {
   initBackButton();
   initMakeScheduleButton();
@@ -254,7 +319,6 @@ const initNearbyPage = async () => {
 
   showLoading($placeList);
 
-  // 축제 상세 정보(이름/주소/좌표)를 한 번만 불러와 재사용
   currentFestival = await getFestivalDetail(festivalId);
 
   if (!currentFestival) {
