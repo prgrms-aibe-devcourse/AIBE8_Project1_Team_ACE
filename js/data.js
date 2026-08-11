@@ -10,6 +10,7 @@ const mapToFestival = (item) => {
     latitude: item.mapy ? Number(item.mapy) : null,
     image: resolveFestivalImage(item),
     overview: item.overview ?? "",
+    lclsSystm3: item.lclsSystm3 ?? "",
   };
 };
 
@@ -45,18 +46,22 @@ const mapCacheRowToFestival = (row) => {
 const upsertFestivalsCache = async (festivals) => {
   if (!window.supabaseClient || festivals.length === 0) return;
 
-  const rows = festivals.map((festival) => ({
-    content_id: festival.id,
-    title: festival.title,
-    event_start_date: festival.eventStartDate,
-    event_end_date: festival.eventEndDate,
-    address: festival.address,
-    longitude: festival.longitude,
-    latitude: festival.latitude,
-    image: festival.image,
-    overview: festival.overview,
-    synced_at: new Date().toISOString(),
-  }));
+  const rows = festivals.map((festival) => {
+    const row = {
+      content_id: festival.id,
+      title: festival.title,
+      event_start_date: festival.eventStartDate,
+      event_end_date: festival.eventEndDate,
+      address: festival.address,
+      longitude: festival.longitude,
+      latitude: festival.latitude,
+      image: festival.image,
+      synced_at: new Date().toISOString(),
+    };
+
+    if (festival.overview) row.overview = festival.overview;
+    return row;
+  });
 
   const { error } = await window.supabaseClient.from("festivals").upsert(rows);
   if (error) console.log("festivals 캐시 저장 실패", error);
@@ -105,7 +110,8 @@ const getCachedFestivalDetail = async (festivalId) => {
     .eq("content_id", festivalId)
     .maybeSingle();
 
-  if (error || !row || !isCacheFresh(row.synced_at)) return null;
+  // overview가 없으면(목록 캐시로만 채워진 행이면) 신선해도 상세 캐시로 인정하지 않는다.
+  if (error || !row || !row.overview || !isCacheFresh(row.synced_at)) return null;
 
   return mapCacheRowToFestival(row);
 };
