@@ -90,10 +90,12 @@ const handleCardClick = (event) => {
 // ------------------------ 페이지네이션 ------------------------//
 const renderPagination = () => {
   const totalPages = Math.ceil(filteredFestivals.length / PAGE_SIZE);
-  let pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
+  // let pageNumbers = [];
+  // for (let i = 1; i <= totalPages; i++) {
+  //   pageNumbers.push(i);
+  // }
+  let pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+
   const container = $("#pagination");
 
   container.innerHTML = pageNumbers.map(createPageButtonHTML).join("");
