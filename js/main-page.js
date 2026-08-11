@@ -116,26 +116,28 @@ const registerPageButtonHandlers = () => {
   });
 };
 
+const updateDisplay = () => {
+  renderFestivalList();
+  renderPagination();
+};
+
 const handlePageButtonClick = (event) => {
   const pageNumber = event.currentTarget.dataset.page;
   currentPage = Number(pageNumber);
-  renderFestivalList();
-  renderPagination();
+  updateDisplay();
 };
 
 const handleNextPageClick = () => {
   const totalPages = Math.ceil(filteredFestivals.length / PAGE_SIZE);
   if (currentPage === totalPages) return;
   currentPage += 1;
-  renderFestivalList();
-  renderPagination();
+  updateDisplay();
 };
 
 const handlePrevPageClick = () => {
   if (currentPage === 1) return;
   currentPage -= 1;
-  renderFestivalList();
-  renderPagination();
+  updateDisplay();
 };
 
 // ------------------------ 드롭박스 ------------------------//
@@ -181,8 +183,7 @@ const filters = () => {
   });
 
   currentPage = 1;
-  renderFestivalList();
-  renderPagination();
+  updateDisplay();
 };
 
 const handlePeriodChange = (e) => {
