@@ -45,6 +45,9 @@
             <p class="schedule-card-date">${dateText}</p>
             <p class="schedule-card-count">저장한 장소 <strong>${places.length}</strong>곳</p>
           </div>
+          <div class="schedule-card-actions">
+            <button type="button" class="delete-btn" data-schedule-id="${schedule.id}">삭제</button>
+          </div>
         </div>
         <div class="schedule-card-body">
           <p class="schedule-card-body-label">저장한 장소</p>
@@ -100,6 +103,31 @@
     renderSchedules(schedules);
   };
 
+  const handleScheduleContentClick = async (event) => {
+    const deleteButton = event.target.closest(".delete-btn");
+    if (!deleteButton) { return; }
+
+    const scheduleId = Number(deleteButton.dataset.scheduleId);
+    const shouldDelete = window.confirm("이 일정을 삭제하시겠습니까?");
+
+    if (!shouldDelete) { return; }
+
+    deleteButton.disabled = true;
+
+    const removeResult = await window.Schedule.remove(scheduleId);
+    if (!removeResult.ok) {
+      window.alert(
+        removeResult.error?.message ?? "일정을 삭제하지 못했습니다.",
+      );
+      deleteButton.disabled = false;
+      return;
+    }
+    await loadSchedules();
+    await renderHeader();
+  };
+
   const handleDOMContentLoaded = async () => { await loadSchedules(); };
+
+  scheduleContent.addEventListener("click", handleScheduleContentClick);
   document.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
 })();
