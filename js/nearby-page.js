@@ -229,13 +229,13 @@ const renderSchedulePreview = () => {
       <div class="schedule-step-list">${stepsHTML}</div>
       <div class="schedule-preview-actions">
         <button class="btn-outline-primary" id="save-schedule-btn">저장</button>
-        <button class="btn-outline-gray" id="copy-link-btn">공유 링크 복사</button>
+        <button class="btn-outline-gray" id="copy-schedule-btn">일정 공유하기</button>
       </div>
     </div>
   `;
 
   $("#save-schedule-btn")?.addEventListener("click", handleSaveScheduleClick);
-  $("#copy-link-btn")?.addEventListener("click", handleCopyLinkClick);
+  $("#copy-schedule-btn")?.addEventListener("click", handleCopyScheduleClick);
 };
 
 const handleMakeScheduleClick = () => {
@@ -287,15 +287,38 @@ const handleSaveScheduleClick = async () => {
   window.alert("내 일정표에 추가됐어요!");
   await renderHeader();
 };
+// ========== 15. 일정 텍스트 생성 ==========
+const createScheduleText = () => {
+  const places = Array.from(selectedPlaces.values());
+  const routeText = places.map((place) => place.name).join(" → ");
 
-// ========== 15. 공유 링크 복사 ==========
-const handleCopyLinkClick = async () => {
+  const addressText = places
+    .map((place) => {
+      const address = place.address || "주소 정보 없음";
+      return `- ${place.name}: ${address}`;
+    })
+    .join("\n");
+
+  return [
+    `우리 이번 "${currentFestival.title}"에서 이런 일정 어때?`,
+    "",
+    "이동 경로",
+    routeText,
+    "",
+    "상세 주소",
+    addressText,
+  ].join("\n");
+};
+
+// ========== 15.A 일정 텍스트 복사 ==========
+const handleCopyScheduleClick = async () => {
   try {
-    await navigator.clipboard.writeText(location.href);
-    window.alert("현재 페이지 링크를 복사했어요!");
+    const scheduleText = createScheduleText();
+    await navigator.clipboard.writeText(scheduleText);
+    window.alert("일정을 복사했어요!");
   } catch (err) {
-    console.error("링크 복사 실패", err);
-    window.alert("링크 복사에 실패했습니다.");
+    console.error("일정 복사 실패", err);
+    window.alert("일정 복사에 실패했습니다.");
   }
 };
 
