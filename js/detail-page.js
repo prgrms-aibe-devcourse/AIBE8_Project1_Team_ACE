@@ -70,7 +70,7 @@ const getCurrentFestival = () => {
   return festivalId;
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  getFestival();
-  renderFestivalDetails();
+document.addEventListener("DOMContentLoaded", async () => {
+  await getFestival();
+  //renderFestivalDetails();
 });
