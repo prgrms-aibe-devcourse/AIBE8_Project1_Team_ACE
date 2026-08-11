@@ -737,6 +737,16 @@ button {
   display: flex;
 }
 
+.nearby-sticky-header {
+  position: sticky;
+  top: 64px; /* .site-header 높이(64px) 바로 아래에 붙도록 */
+  z-index: 30;
+  background: var(--bg);
+  padding-top: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-light);
+}
+
 .tab-btn {
   padding: 12px 24px;
   background: none;
