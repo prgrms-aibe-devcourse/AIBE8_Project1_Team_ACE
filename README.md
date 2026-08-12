@@ -134,7 +134,7 @@ RLS는 `auth.uid()`와 일정의 `user_id`를 비교하여 다음 규칙을 적�
 
 ### 배포 사이트
 
-[https://qkdtkd77.github.io/AIBE8_Project1_ACE/](https://qkdtkd77.github.io/AIBE8_Project1_ACE/)
+https://prgrms-aibe-devcourse.github.io/AIBE8_Project1_Team_ACE/
 
 ### 로컬 실행
 
