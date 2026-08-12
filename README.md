@@ -2,7 +2,7 @@
 
 > 전국 축제를 탐색하고 주변 맛집·카페·숙소를 선택해 나만의 일정을 만들고 관리하는 축제 추천 서비스
 
-[🚀 배포 사이트](https://qkdtkd77.github.io/AIBE8_Project1_ACE/)
+[🚀 배포 사이트](https://prgrms-aibe-devcourse.github.io/AIBE8_Project1_Team_ACE/)
 
 TourAPI와 Kakao Local API로 축제와 주변 장소를 조회하고, Supabase Auth·PostgreSQL·RLS를 이용해 사용자별 일정을 관리합니다.
 
